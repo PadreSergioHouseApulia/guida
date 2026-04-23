@@ -196,6 +196,115 @@
             </ul>
         </div>
 
+	<style>
+    .oracolo-container {
+        max-width: 600px;
+        margin: 30px auto;
+        background: linear-gradient(135deg, #e8f8f5 0%, #f4f7f6 100%);
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        border-left: 5px solid #5e7153;
+        text-align: left;
+        font-family: 'Arial', sans-serif;
+    }
+    .oracolo-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+    .oracolo-icona {
+        font-size: 30px;
+    }
+    .oracolo-titolo {
+        margin: 0;
+        font-family: 'Georgia', serif;
+        color: #5e7153;
+        font-size: 20px;
+    }
+    .oracolo-dati {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+    .oracolo-consiglio {
+        font-size: 15px;
+        color: #333;
+        line-height: 1.5;
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+    }
+    .loading-oracolo {
+        font-style: italic;
+        color: #888;
+        font-size: 14px;
+    }
+</style>
+
+<div class="oracolo-container">
+    <div class="oracolo-header">
+        <div class="oracolo-icona" id="oracolo-emoji">🧭</div>
+        <h3 class="oracolo-titolo">L'Oracolo del Mare</h3>
+    </div>
+    <div id="oracolo-contenuto">
+        <div class="loading-oracolo">Lettura dei venti a Monopoli in corso... 🌬️</div>
+    </div>
+</div>
+
+<script>
+    async function interrogaOracolo() {
+        try {
+            // Coordinate esatte di Monopoli
+            const url = 'https://api.open-meteo.com/v1/forecast?latitude=40.9559&longitude=17.2896&current_weather=true';
+            const response = await fetch(url);
+            const data = await response.json();
+            
+            const ventoDir = data.current_weather.winddirection;
+            const ventoVel = data.current_weather.windspeed;
+            
+            let nomeVento = "";
+            let consiglio = "";
+            let emoji = "🧭";
+
+            // Logica dei venti pugliesi per la costa di Monopoli
+            if (ventoDir >= 315 || ventoDir <= 45) {
+                nomeVento = "Tramontana / Maestrale (da Nord)";
+                emoji = "🌊";
+                consiglio = "Oggi il vento soffia da Nord. Il mare aperto potrebbe essere un po' mosso o increspato. <strong>Il nostro consiglio:</strong> Cerca calette ben riparate come <em>Cala Susca</em> o <em>Cala Monaci</em>, oppure scegli i lidi attrezzati con frangiflutti a Capitolo!";
+            } else if (ventoDir > 45 && ventoDir < 135) {
+                nomeVento = "Levante (dal Mare)";
+                emoji = "💨";
+                consiglio = "Oggi il vento spinge direttamente dal mare verso la costa. <strong>Il nostro consiglio:</strong> Fai attenzione se fai il bagno in zone di scogliera aperta. È la giornata perfetta per esplorare il Centro Storico o rilassarsi nelle calette più profonde e protette all'interno della città.";
+            } else if (ventoDir >= 135 && ventoDir <= 225) {
+                nomeVento = "Scirocco (da Sud)";
+                emoji = "🌴";
+                consiglio = "Oggi soffia Scirocco, vento caldo da Sud! Le lunghe spiagge sabbiose di Capitolo potrebbero avere mare mosso. <strong>Il nostro consiglio:</strong> Resta nelle calette cittadine esposte a Nord come <em>Porta Vecchia</em>, oppure fai una gita verso nord, a Polignano a Mare!";
+            } else {
+                nomeVento = "Ponente / Libeccio (da Terra)";
+                emoji = "🏖️";
+                consiglio = "Splendide notizie! Il vento soffia da terra verso il mare. <strong>Il nostro consiglio:</strong> L'Adriatico oggi sarà piatto come una tavola! È la giornata perfetta per godersi l'acqua cristallina nelle grandi spiagge di <em>Capitolo</em> o a <em>Santo Stefano</em>. Approfittane!";
+            }
+
+            // Aggiorna l'interfaccia
+            document.getElementById('oracolo-emoji').innerText = emoji;
+            document.getElementById('oracolo-contenuto').innerHTML = `
+                <div class="oracolo-dati">Vento attuale: ${nomeVento} (${ventoVel} km/h)</div>
+                <div class="oracolo-consiglio">${consiglio}</div>
+            `;
+
+        } catch (error) {
+            document.getElementById('oracolo-contenuto').innerHTML = `<div class="oracolo-consiglio">Oggi l'Oracolo riposa. Ma a Monopoli il mare è quasi sempre uno spettacolo! Chiedici un consiglio su WhatsApp. 😉</div>`;
+        }
+    }
+
+    // Avvia l'oracolo appena si carica la pagina
+    window.addEventListener('DOMContentLoaded', interrogaOracolo);
+</script>
+
         <div class="contact-box">
             <h3 style="margin-bottom: 10px;"><span lang="it">Hai bisogno di noi?</span><span lang="en">Do you need us?</span></h3>
             <p lang="it" style="font-size:14px; margin-top:0;">Siamo a tua completa disposizione per qualsiasi evenienza.</p>
@@ -242,5 +351,6 @@
             });
         }
     </script>
+
 </body>
 </html>
