@@ -215,17 +215,49 @@
             </ul>
         </div>
 
-<div class="card" style="padding: 0; overflow: hidden; text-align: center;">
-            <div style="background: url('cartolina.jpg') center/cover no-repeat; height: 220px; position: relative; background-color: #ddd;">
-                <div style="position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 20px; box-sizing: border-box; text-align: left;">
+<style>
+            .cartolina-preview { 
+                background: url('cartolina1.jpg') center/cover no-repeat; 
+                height: 220px; 
+                position: relative; 
+                background-color: #ddd;
+                border-top-left-radius: 12px;
+                border-top-right-radius: 12px;
+                transition: background-image 0.3s ease;
+            }
+            .cartolina-overlay { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 20px; box-sizing: border-box; text-align: left; }
+            .thumb-scroll { display: flex; gap: 12px; overflow-x: auto; padding: 15px 20px 5px 20px; scrollbar-width: none; }
+            .thumb-scroll::-webkit-scrollbar { display: none; }
+            .thumb-img { width: 70px; height: 70px; border-radius: 8px; object-fit: cover; cursor: pointer; border: 3px solid transparent; opacity: 0.6; transition: 0.2s; flex-shrink: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+            .thumb-img.active { border-color: #5e7153; opacity: 1; transform: scale(1.05); }
+        </style>
+
+        <div class="card" style="padding: 0; overflow: hidden; text-align: center; border-radius: 12px;">
+            
+            <div id="preview-box" class="cartolina-preview">
+                <div class="cartolina-overlay">
                     <h3 style="color: white; margin: 0; font-size: 24px;"><span lang="it">Saluti da Monopoli! ☀️</span><span lang="en">Greetings from Monopoli! ☀️</span></h3>
                     <p style="color: #eee; margin: 5px 0 0 0; font-size: 14px; font-weight: bold;">PadreSergio House</p>
                 </div>
             </div>
 
+            <div style="background: #f4f7f6; text-align: left; padding: 10px 20px 0 20px;">
+                <span lang="it" style="font-size: 13px; font-weight: bold; color: #666;">Scegli lo sfondo:</span>
+                <span lang="en" style="font-size: 13px; font-weight: bold; color: #666;">Choose background:</span>
+            </div>
+            
+            <div class="thumb-scroll">
+                <img src="cartolina1.jpg" class="thumb-img active" onclick="cambiaCartolina('cartolina1.jpg', this)">
+                <img src="cartolina2.jpg" class="thumb-img" onclick="cambiaCartolina('cartolina2.jpg', this)">
+                <img src="cartolina3.jpg" class="thumb-img" onclick="cambiaCartolina('cartolina3.jpg', this)">
+                <img src="cartolina4.jpg" class="thumb-img" onclick="cambiaCartolina('cartolina4.jpg', this)">
+                <img src="cartolina5.jpg" class="thumb-img" onclick="cambiaCartolina('cartolina5.jpg', this)">
+                <img src="cartolina6.jpg" class="thumb-img" onclick="cambiaCartolina('cartolina6.jpg', this)">
+            </div>
+
             <div style="padding: 20px;">
-                <p lang="it" style="margin-top:0; font-size: 15px;">Genera una cartolina personalizzata con la data di oggi, pronta da scaricare o condividere! 😉</p>
-                <p lang="en" style="margin-top:0; font-size: 15px;">Generate a personalized postcard with today's date, ready to download or share! 😉</p>
+                <p lang="it" style="margin-top:0; font-size: 15px;">Genera la tua cartolina personalizzata con la data di oggi, pronta da scaricare o condividere! 😉</p>
+                <p lang="en" style="margin-top:0; font-size: 15px;">Generate your personalized postcard with today's date, ready to download or share! 😉</p>
                 
                 <button class="btn-copia" id="btn-genera-cartolina" onclick="generaECondividiCartolina()" style="background-color: #3498DB; box-shadow: 0 4px 6px rgba(52, 152, 219, 0.3);">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
@@ -238,6 +270,24 @@
         </div>
 
         <script>
+            // La variabile che ricorda quale immagine è selezionata al momento
+            let cartolinaSelezionata = 'cartolina1.jpg';
+
+            // Funzione scattata quando si clicca una miniatura
+            function cambiaCartolina(nomeFile, elementoImg) {
+                cartolinaSelezionata = nomeFile;
+                
+                // Cambia l'immagine grande in alto
+                document.getElementById('preview-box').style.backgroundImage = `url('${nomeFile}')`;
+                
+                // Toglie il bordo verde a tutte le miniature
+                const thumbs = document.querySelectorAll('.thumb-img');
+                thumbs.forEach(t => t.classList.remove('active'));
+                
+                // Mette il bordo verde a quella appena cliccata
+                elementoImg.classList.add('active');
+            }
+
             function formattaData(date, lang) {
                 return date.toLocaleDateString(lang === 'it' ? 'it-IT' : 'en-US', { day: '2-digit', month: '2-digit', year: 'numeric' });
             }
@@ -256,7 +306,8 @@
 
                 try {
                     const imgBackground = new Image();
-                    imgBackground.src = 'cartolina.jpg'; // <-- CONTROLLA CHE IL NOME SIA IDENTICO SU GITHUB
+                    // USA LA VARIABILE invece del nome fisso!
+                    imgBackground.src = cartolinaSelezionata; 
                     imgBackground.crossOrigin = "Anonymous";
 
                     await new Promise((resolve, reject) => {
@@ -287,7 +338,7 @@
                     canvas.toBlob(async (blob) => {
                         const file = new File([blob], 'cartolina_padresergio.jpg', { type: 'image/jpeg' });
                         const didascalia = lang === 'it' ? "La mia cartolina da PadreSergio House! ☀️" : "My postcard from PadreSergio House! ☀️";
-                        const urlSito = "https://padresergiohouseapulia.github.io/Padresergio_Web/"; 
+                        const urlSito = "https://padresergiohouseapulia.github.io/padresergio_web/"; 
 
                         if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
                             await navigator.share({ files: [file], title: 'PadreSergio House', text: didascalia + "\n" + urlSito });
@@ -300,14 +351,14 @@
                             alert(lang === 'it' ? "📸 Cartolina scaricata! Trovala nei Download." : "📸 Postcard downloaded! Check your Downloads.");
                         }
                         
-                        btn.innerHTML = lang === 'it' ? 'Genera e Condividi' : 'Generate & Share';
+                        btn.innerHTML = lang === 'it' ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg> Genera e Condividi' : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg> Generate & Share';
                         btn.disabled = false;
                     }, 'image/jpeg', 0.9);
 
                 } catch (error) {
-                    alert(lang === 'it' ? 'Errore: assicurati che il file cartolina.jpg sia caricato su GitHub.' : 'Error: make sure cartolina.jpg is uploaded to GitHub.');
+                    alert(lang === 'it' ? 'Errore: assicurati che le immagini siano caricate correttamente su GitHub.' : 'Error: make sure the images are uploaded correctly to GitHub.');
                     btn.disabled = false;
-                    btn.innerText = 'Genera';
+                    btn.innerHTML = lang === 'it' ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg> Genera e Condividi' : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg> Generate & Share';
                 }
             }
         </script>
