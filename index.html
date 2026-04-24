@@ -215,6 +215,53 @@
             </ul>
         </div>
 
+	<div class="card" style="padding: 0; overflow: hidden; text-align: center;">
+            <div style="background: url('cartolina.jpg') center/cover no-repeat; height: 220px; position: relative;">
+                <div style="position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 20px; box-sizing: border-box; text-align: left;">
+                    <h3 style="color: white; margin: 0; font-size: 24px;"><span lang="it">Saluti da Monopoli! ☀️</span><span lang="en">Greetings from Monopoli! ☀️</span></h3>
+                    <p style="color: #eee; margin: 5px 0 0 0; font-size: 14px; font-weight: bold;">PadreSergio House</p>
+                </div>
+            </div>
+            <div style="padding: 20px;">
+                <p lang="it" style="margin-top:0; font-size: 15px;">Fai invidia agli amici a casa! Condividi questa cartolina digitale sui tuoi social o inviala direttamente su WhatsApp. 😉</p>
+                <p lang="en" style="margin-top:0; font-size: 15px;">Make your friends back home jealous! Share this digital postcard on your socials or send it via WhatsApp. 😉</p>
+                
+                <button class="btn-copia" onclick="condividiCartolina()" style="background-color: #3498DB; box-shadow: 0 4px 6px rgba(52, 152, 219, 0.3);">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                    <span lang="it">Condividi Cartolina</span>
+                    <span lang="en">Share Postcard</span>
+                </button>
+            </div>
+        </div>
+
+        <script>
+            function condividiCartolina() {
+                // Capisce la lingua attuale della pagina
+                const lang = document.body.className || 'it';
+                
+                // Il testo che verrà condiviso in automatico
+                const testo = lang === 'it' 
+                    ? "Saluti dalla bellissima Monopoli! ☀️ Sto trascorrendo un soggiorno fantastico a PadreSergio House. Guarda che meraviglia!" 
+                    : "Greetings from beautiful Monopoli! ☀️ I'm having an amazing stay at PadreSergio House. Check it out!";
+                
+                // INSERISCI QUI IL LINK AL TUO SITO VETRINA (Non alla guida, ma al sito dove si prenota!)
+                const urlSito = "https://padresergiohouseapulia.github.io/padresergio_web/"; 
+
+                if (navigator.share) {
+                    // Apre il menu di condivisione nativo di iOS e Android
+                    navigator.share({
+                        title: 'PadreSergio House',
+                        text: testo,
+                        url: urlSito
+                    }).catch((error) => console.log('Condivisione annullata', error));
+                } else {
+                    // Alternativa di emergenza per browser vecchi o PC: Apre direttamente WhatsApp
+                    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(testo + " " + urlSito)}`;
+                    window.open(whatsappUrl, '_blank');
+                }
+            }
+        </script>
+
         <div class="contact-box">
             <h3 style="margin-bottom: 10px;"><span lang="it">Hai bisogno di noi?</span><span lang="en">Do you need us?</span></h3>
             <p lang="it" style="font-size:14px; margin-top:0;">Siamo a tua completa disposizione per qualsiasi evenienza.</p>
