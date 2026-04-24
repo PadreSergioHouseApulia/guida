@@ -230,13 +230,32 @@
             <canvas id="canvas-cartolina" style="display:none;"></canvas>
         </div>
 
+        <div class="card" style="padding: 0; overflow: hidden; text-align: center;">
+            <div style="background: url('cartolina.jpg') center/cover no-repeat; height: 220px; position: relative; background-color: #ddd;">
+                <div style="position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 20px; box-sizing: border-box; text-align: left;">
+                    <h3 style="color: white; margin: 0; font-size: 24px;"><span lang="it">Saluti da Monopoli! ☀️</span><span lang="en">Greetings from Monopoli! ☀️</span></h3>
+                    <p style="color: #eee; margin: 5px 0 0 0; font-size: 14px; font-weight: bold;">PadreSergio House</p>
+                </div>
+            </div>
+
+            <div style="padding: 20px;">
+                <p lang="it" style="margin-top:0; font-size: 15px;">Genera una cartolina personalizzata con la data di oggi, pronta da scaricare o condividere! 😉</p>
+                <p lang="en" style="margin-top:0; font-size: 15px;">Generate a personalized postcard with today's date, ready to download or share! 😉</p>
+                
+                <button class="btn-copia" id="btn-genera-cartolina" onclick="generaECondividiCartolina()" style="background-color: #3498DB; box-shadow: 0 4px 6px rgba(52, 152, 219, 0.3);">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                    <span lang="it">Genera e Condividi</span>
+                    <span lang="en">Generate & Share</span>
+                </button>
+            </div>
+            
+            <canvas id="canvas-cartolina" style="display:none;"></canvas>
+        </div>
+
         <script>
-            // Funzione per formattare la data (DD/MM/YYYY)
             function formattaData(date, lang) {
                 return date.toLocaleDateString(lang === 'it' ? 'it-IT' : 'en-US', { day: '2-digit', month: '2-digit', year: 'numeric' });
             }
-
-            // Funzione per formattare l'ora (HH:MM)
             function formattaOra(date, lang) {
                 return date.toLocaleTimeString(lang === 'it' ? 'it-IT' : 'en-US', { hour: '2-digit', minute: '2-digit' });
             }
@@ -247,106 +266,63 @@
                 const canvas = document.getElementById('canvas-cartolina');
                 const ctx = canvas.getContext('2d');
                 
-                // Stato di caricamento
-                btn.innerHTML = lang === 'it' ? '💡 Generazione in corso...' : '💡 Generating...';
+                btn.innerHTML = lang === 'it' ? '💡 Generazione...' : '💡 Generating...';
                 btn.disabled = true;
 
                 try {
-                    // 1. CARICA LA FOTO DI SFONDO (Assicurati che cartolina.jpg esista!)
                     const imgBackground = new Image();
-                    imgBackground.src = './cartolina.jpg'; 
+                    imgBackground.src = 'cartolina.jpg'; // <-- CONTROLLA CHE IL NOME SIA IDENTICO SU GITHUB
                     imgBackground.crossOrigin = "Anonymous";
 
                     await new Promise((resolve, reject) => {
                         imgBackground.onload = resolve;
-                        imgBackground.onerror = reject;
+                        imgBackground.onerror = () => reject(new Error("Immagine non trovata"));
                     });
 
-                    // 2. IMPOSTA LE DIMENSIONI DELLA CARTOLINA
                     canvas.width = 1200; 
                     canvas.height = 900; 
-
-                    // 3. DISEGNA LO SFONDO
                     ctx.drawImage(imgBackground, 0, 0, 1200, 900);
-
-                    // 4. BANDA SEMI-TRASPARENTE
                     ctx.fillStyle = 'rgba(0, 0, 0, 0.6)'; 
                     ctx.fillRect(0, 750, 1200, 150);
-
-                    // 5. STILE DEL TESTO
                     ctx.fillStyle = 'white';
-                    ctx.shadowColor = 'rgba(0,0,0,0.5)'; 
-                    ctx.shadowBlur = 4;
-
-                    // 6. SCRIVI IL NOME DELLA STRUTTURA
                     ctx.font = 'bold 60px Georgia';
                     ctx.fillText('PadreSergio House', 50, 820); 
 
-                    // 7. LEGGI DATA E ORA E SCRIVILE
                     const oraEsatta = new Date();
                     const dataStr = formattaData(oraEsatta, lang);
                     const oraStr = formattaOra(oraEsatta, lang);
-                    
-                    const testoData = lang === 'it' 
-                        ? `Creata il: ${dataStr} ore ${oraStr}` 
-                        : `Generated: ${dataStr} at ${oraStr}`;
+                    const testoData = lang === 'it' ? `Creata il: ${dataStr} ore ${oraStr}` : `Generated: ${dataStr} at ${oraStr}`;
                     
                     ctx.font = '40px Arial';
                     ctx.fillText(testoData, 50, 870); 
-
-                    // 8. CORNICE ESTERNA
                     ctx.strokeStyle = 'white';
                     ctx.lineWidth = 10;
                     ctx.strokeRect(10, 10, 1180, 880);
 
-                    // 9. TRASFORMA IN IMMAGINE
                     canvas.toBlob(async (blob) => {
                         const file = new File([blob], 'cartolina_padresergio.jpg', { type: 'image/jpeg' });
-                        
-                        const didascalia = lang === 'it' 
-                            ? "Guarda la cartolina unica che ho creato a PadreSergio House! ☀️" 
-                            : "Check out the unique postcard I just created at PadreSergio House! ☀️";
-                        
+                        const didascalia = lang === 'it' ? "La mia cartolina da PadreSergio House! ☀️" : "My postcard from PadreSergio House! ☀️";
                         const urlSito = "https://padresergiohouseapulia.github.io/Padresergio_Web/"; 
 
-                        // 10. CONTROLLA SE È SMARTPHONE O PC
                         if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-                            // SMARTPHONE: Usa il menu di condivisione nativo
-                            await navigator.share({
-                                files: [file],
-                                title: 'PadreSergio House',
-                                text: didascalia + "\n" + urlSito
-                            });
+                            await navigator.share({ files: [file], title: 'PadreSergio House', text: didascalia + "\n" + urlSito });
                         } else {
-                            // COMPUTER (PC/MAC): Scarica l'immagine in automatico
                             const urlImmagine = URL.createObjectURL(blob);
                             const linkDownload = document.createElement('a');
                             linkDownload.href = urlImmagine;
                             linkDownload.download = 'Cartolina_PadreSergio.jpg';
-                            document.body.appendChild(linkDownload);
                             linkDownload.click();
-                            document.body.removeChild(linkDownload);
-                            URL.revokeObjectURL(urlImmagine);
-                            
-                            // Avvisa l'utente
-                            setTimeout(() => {
-                                alert(lang === 'it' 
-                                    ? "📸 Essendo da computer, la tua cartolina è stata scaricata! Trovala nei Download e inviala a chi vuoi." 
-                                    : "📸 Since you are on a computer, your postcard has been downloaded! Find it in your Downloads folder and send it.");
-                            }, 500);
+                            alert(lang === 'it' ? "📸 Cartolina scaricata! Trovala nei Download." : "📸 Postcard downloaded! Check your Downloads.");
                         }
                         
-                        // Ripristina il bottone
-                        btn.innerHTML = lang === 'it' ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg> Genera e Condividi' : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg> Generate & Share';
+                        btn.innerHTML = lang === 'it' ? 'Genera e Condividi' : 'Generate & Share';
                         btn.disabled = false;
-
                     }, 'image/jpeg', 0.9);
 
                 } catch (error) {
-                    console.error('Errore generazione:', error);
-                    alert(lang === 'it' ? 'Si è verificato un errore. Assicurati che l\'immagine cartolina.jpg sia caricata correttamente su GitHub.' : 'An error occurred. Make sure cartolina.jpg is uploaded correctly to GitHub.');
-                    btn.innerText = lang === 'it' ? 'Genera e Condividi' : 'Generate & Share';
+                    alert(lang === 'it' ? 'Errore: assicurati che il file cartolina.jpg sia caricato su GitHub.' : 'Error: make sure cartolina.jpg is uploaded to GitHub.');
                     btn.disabled = false;
+                    btn.innerText = 'Genera';
                 }
             }
         </script>
