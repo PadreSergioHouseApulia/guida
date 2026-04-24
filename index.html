@@ -215,54 +215,128 @@
             </ul>
         </div>
 
-	<div class="card" style="padding: 0; overflow: hidden; text-align: center;">
-            <div style="background: url('cartolina.jpg') center/cover no-repeat; height: 220px; position: relative;">
-                <div style="position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 20px; box-sizing: border-box; text-align: left;">
-                    <h3 style="color: white; margin: 0; font-size: 24px;"><span lang="it">Saluti da Monopoli! ☀️</span><span lang="en">Greetings from Monopoli! ☀️</span></h3>
-                    <p style="color: #eee; margin: 5px 0 0 0; font-size: 14px; font-weight: bold;">PadreSergio House</p>
-                </div>
-            </div>
-            <div style="padding: 20px;">
-                <p lang="it" style="margin-top:0; font-size: 15px;">Fai invidia agli amici a casa! Condividi questa cartolina digitale sui tuoi social o inviala direttamente su WhatsApp. 😉</p>
-                <p lang="en" style="margin-top:0; font-size: 15px;">Make your friends back home jealous! Share this digital postcard on your socials or send it via WhatsApp. 😉</p>
-                
-                <button class="btn-copia" onclick="condividiCartolina()" style="background-color: #3498DB; box-shadow: 0 4px 6px rgba(52, 152, 219, 0.3);">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-                    <span lang="it">Condividi Cartolina</span>
-                    <span lang="en">Share Postcard</span>
-                </button>
-            </div>
-        </div>
+<script>
+            // Funzione per formattare la data (DD/MM/YYYY)
+            function formattaData(date, lang) {
+                return date.toLocaleDateString(lang === 'it' ? 'it-IT' : 'en-US', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            }
 
-        <script>
-            function condividiCartolina() {
-                // Capisce la lingua attuale della pagina
+            // Funzione per formattare l'ora (HH:MM)
+            function formattaOra(date, lang) {
+                return date.toLocaleTimeString(lang === 'it' ? 'it-IT' : 'en-US', { hour: '2-digit', minute: '2-digit' });
+            }
+
+            async function generaECondividiCartolina() {
                 const lang = document.body.className || 'it';
+                const btn = document.getElementById('btn-genera-cartolina');
+                const canvas = document.getElementById('canvas-cartolina');
+                const ctx = canvas.getContext('2d');
                 
-                // Il testo che verrà condiviso in automatico
-                const testo = lang === 'it' 
-                    ? "Saluti dalla bellissima Monopoli! ☀️ Sto trascorrendo un soggiorno fantastico a PadreSergio House. Guarda che meraviglia!" 
-                    : "Greetings from beautiful Monopoli! ☀️ I'm having an amazing stay at PadreSergio House. Check it out!";
-                
-                // INSERISCI QUI IL LINK AL TUO SITO VETRINA (Non alla guida, ma al sito dove si prenota!)
-                const urlSito = "https://padresergiohouseapulia.github.io/padresergio_web/"; 
+                // Stato di caricamento
+                btn.innerHTML = lang === 'it' ? '💡 Generazione in corso...' : '💡 Generating...';
+                btn.disabled = true;
 
-                if (navigator.share) {
-                    // Apre il menu di condivisione nativo di iOS e Android
-                    navigator.share({
-                        title: 'PadreSergio House',
-                        text: testo,
-                        url: urlSito
-                    }).catch((error) => console.log('Condivisione annullata', error));
-                } else {
-                    // Alternativa di emergenza per browser vecchi o PC: Apre direttamente WhatsApp
-                    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(testo + " " + urlSito)}`;
-                    window.open(whatsappUrl, '_blank');
+                try {
+                    // 1. CARICA LA FOTO DI SFONDO
+                    const imgBackground = new Image();
+                    imgBackground.src = './cartolina.jpg'; 
+                    imgBackground.crossOrigin = "Anonymous";
+
+                    await new Promise((resolve, reject) => {
+                        imgBackground.onload = resolve;
+                        imgBackground.onerror = reject;
+                    });
+
+                    // 2. IMPOSTA LE DIMENSIONI DELLA CARTOLINA
+                    canvas.width = 1200; 
+                    canvas.height = 900; 
+
+                    // 3. DISEGNA LO SFONDO
+                    ctx.drawImage(imgBackground, 0, 0, 1200, 900);
+
+                    // 4. BANDA SEMI-TRASPARENTE
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.6)'; 
+                    ctx.fillRect(0, 750, 1200, 150);
+
+                    // 5. STILE DEL TESTO
+                    ctx.fillStyle = 'white';
+                    ctx.shadowColor = 'rgba(0,0,0,0.5)'; 
+                    ctx.shadowBlur = 4;
+
+                    // 6. SCRIVI IL NOME DELLA STRUTTURA
+                    ctx.font = 'bold 60px Georgia';
+                    ctx.fillText('PadreSergio House', 50, 820); 
+
+                    // 7. LEGGI DATA E ORA E SCRIVILE
+                    const oraEsatta = new Date();
+                    const dataStr = formattaData(oraEsatta, lang);
+                    const oraStr = formattaOra(oraEsatta, lang);
+                    
+                    const testoData = lang === 'it' 
+                        ? `Creata il: ${dataStr} ore ${oraStr}` 
+                        : `Generated: ${dataStr} at ${oraStr}`;
+                    
+                    ctx.font = '40px Arial';
+                    ctx.fillText(testoData, 50, 870); 
+
+                    // 8. CORNICE ESTERNA
+                    ctx.strokeStyle = 'white';
+                    ctx.lineWidth = 10;
+                    ctx.strokeRect(10, 10, 1180, 880);
+
+                    // 9. TRASFORMA IN IMMAGINE
+                    canvas.toBlob(async (blob) => {
+                        const file = new File([blob], 'cartolina_padresergio.jpg', { type: 'image/jpeg' });
+                        
+                        const didascalia = lang === 'it' 
+                            ? "Guarda la cartolina unica che ho creato a PadreSergio House! ☀️" 
+                            : "Check out the unique postcard I just created at PadreSergio House! ☀️";
+                        
+                        const urlSito = "https://padresergiohouseapulia.github.io/padresergio_web/"; 
+
+                        // 10. CONTROLLA SE È SMARTPHONE O PC
+                        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                            // SMARTPHONE: Usa il menu di condivisione nativo
+                            await navigator.share({
+                                files: [file],
+                                title: 'PadreSergio House',
+                                text: didascalia + "\n" + urlSito
+                            });
+                        } else {
+                            // COMPUTER (PC/MAC): Scarica l'immagine in automatico
+                            const urlImmagine = URL.createObjectURL(blob);
+                            const linkDownload = document.createElement('a');
+                            linkDownload.href = urlImmagine;
+                            linkDownload.download = 'Cartolina_PadreSergio.jpg';
+                            document.body.appendChild(linkDownload);
+                            linkDownload.click();
+                            document.body.removeChild(linkDownload);
+                            URL.revokeObjectURL(urlImmagine);
+                            
+                            // Avvisa l'utente
+                            setTimeout(() => {
+                                alert(lang === 'it' 
+                                    ? "📸 Essendo da computer, la tua cartolina è stata scaricata! Trovala nei Download e inviala a chi vuoi." 
+                                    : "📸 Since you are on a computer, your postcard has been downloaded! Find it in your Downloads folder and send it.");
+                            }, 500);
+                        }
+                        
+                        // Ripristina il bottone
+                        btn.innerHTML = lang === 'it' ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg> Genera e Condividi' : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg> Generate & Share';
+                        btn.disabled = false;
+
+                    }, 'image/jpeg', 0.9);
+
+                } catch (error) {
+                    console.error('Errore generazione:', error);
+                    alert(lang === 'it' ? 'Si è verificato un errore. Assicurati che l\'immagine cartolina.jpg sia caricata correttamente.' : 'An error occurred. Make sure cartolina.jpg is uploaded correctly.');
+                    btn.innerText = lang === 'it' ? 'Genera e Condividi' : 'Generate & Share';
+                    btn.disabled = false;
                 }
             }
         </script>
-
-        <div class="contact-box">
+       
+            <div class="contact-box">
             <h3 style="margin-bottom: 10px;"><span lang="it">Hai bisogno di noi?</span><span lang="en">Do you need us?</span></h3>
             <p lang="it" style="font-size:14px; margin-top:0;">Siamo a tua completa disposizione per qualsiasi evenienza.</p>
             <p lang="en" style="font-size:14px; margin-top:0;">We are at your complete disposal for any need.</p>
