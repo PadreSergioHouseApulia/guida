@@ -215,7 +215,22 @@
             </ul>
         </div>
 
-<script>
+          <div class="card" style="padding: 25px; text-align: center;">
+            <div class="card-title">✨ <span lang="it">Crea la tua Cartolina Unica</span><span lang="en">Create Your Unique Postcard</span></div>
+            
+            <p lang="it" style="margin-top:0; font-size: 15px;">Genera una vera cartolina fotografica personalizzata PadreSergio House. Con un clic, stamperemo sopra la tua firma e la data di oggi, pronta da scaricare o condividere! 😉</p>
+            <p lang="en" style="margin-top:0; font-size: 15px;">Generate a real personalized PadreSergio House photo postcard. With one click, we'll stamp your signature and today's date, ready to download or share! 😉</p>
+            
+            <button class="btn-copia" id="btn-genera-cartolina" onclick="generaECondividiCartolina()" style="background-color: #3498DB; box-shadow: 0 4px 6px rgba(52, 152, 219, 0.3);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                <span lang="it">Genera e Condividi</span>
+                <span lang="en">Generate & Share</span>
+            </button>
+            
+            <canvas id="canvas-cartolina" style="display:none;"></canvas>
+        </div>
+
+        <script>
             // Funzione per formattare la data (DD/MM/YYYY)
             function formattaData(date, lang) {
                 return date.toLocaleDateString(lang === 'it' ? 'it-IT' : 'en-US', { day: '2-digit', month: '2-digit', year: 'numeric' });
@@ -237,7 +252,7 @@
                 btn.disabled = true;
 
                 try {
-                    // 1. CARICA LA FOTO DI SFONDO
+                    // 1. CARICA LA FOTO DI SFONDO (Assicurati che cartolina.jpg esista!)
                     const imgBackground = new Image();
                     imgBackground.src = './cartolina.jpg'; 
                     imgBackground.crossOrigin = "Anonymous";
@@ -292,7 +307,7 @@
                             ? "Guarda la cartolina unica che ho creato a PadreSergio House! ☀️" 
                             : "Check out the unique postcard I just created at PadreSergio House! ☀️";
                         
-                        const urlSito = "https://padresergiohouseapulia.github.io/padresergio_web/"; 
+                        const urlSito = "https://padresergiohouseapulia.github.io/Padresergio_Web/"; 
 
                         // 10. CONTROLLA SE È SMARTPHONE O PC
                         if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
@@ -329,7 +344,7 @@
 
                 } catch (error) {
                     console.error('Errore generazione:', error);
-                    alert(lang === 'it' ? 'Si è verificato un errore. Assicurati che l\'immagine cartolina.jpg sia caricata correttamente.' : 'An error occurred. Make sure cartolina.jpg is uploaded correctly.');
+                    alert(lang === 'it' ? 'Si è verificato un errore. Assicurati che l\'immagine cartolina.jpg sia caricata correttamente su GitHub.' : 'An error occurred. Make sure cartolina.jpg is uploaded correctly to GitHub.');
                     btn.innerText = lang === 'it' ? 'Genera e Condividi' : 'Generate & Share';
                     btn.disabled = false;
                 }
