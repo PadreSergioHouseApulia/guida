@@ -46,7 +46,7 @@
         
         /* BOTTONI LINGUA NELL'HEADER */
         .lang-switch { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.2); border-radius: 20px; padding: 4px 8px; display: flex; gap: 5px; }
-        .lang-btn { cursor: pointer; font-size: 16px; opacity: 0.5; transition: 0.3s; filter: grayscale(100%); }
+        .lang-btn { cursor: pointer; font-size: 16px; opacity: 0.5; transition: 0.3s; filter: grayscale(100%); border: none; background: none; padding: 0;}
         .lang-btn.active { opacity: 1; filter: grayscale(0%); transform: scale(1.1); }
 
         .container { padding: 20px; max-width: 600px; margin: 0 auto; }
@@ -76,6 +76,15 @@
         .tips-list li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
         .tip-title { font-weight: bold; color: var(--testo-scuro); font-size: 16px; margin-bottom: 3px; }
 
+        /* ORACOLO DEL MARE */
+        .oracolo-container { background: linear-gradient(135deg, #e8f8f5 0%, #f4f7f6 100%); border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.04); border-left: 5px solid #5e7153; text-align: left; }
+        .oracolo-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .oracolo-icona { font-size: 30px; }
+        .oracolo-titolo { margin: 0; font-family: 'Georgia', serif; color: #5e7153; font-size: 20px; }
+        .oracolo-dati { font-size: 14px; color: #666; margin-bottom: 10px; font-weight: bold; }
+        .oracolo-consiglio { font-size: 15px; color: #333; line-height: 1.5; background: white; padding: 15px; border-radius: 8px; border: 1px solid #ddd; }
+        .loading-oracolo { font-style: italic; color: #888; font-size: 14px; }
+
         /* FOOTER / CONTATTI */
         .contact-box { text-align: center; margin-top: 30px; }
         .btn-whatsapp { display: inline-block; background-color: #25D366; color: white; padding: 12px 25px; border-radius: 25px; text-decoration: none; font-weight: bold; box-shadow: 0 4px 6px rgba(37, 211, 102, 0.3); }
@@ -86,8 +95,8 @@
 
     <div class="header">
         <div class="lang-switch">
-            <span class="lang-btn active" id="btn-it" onclick="setLang('it')">🇮🇹</span>
-            <span class="lang-btn" id="btn-en" onclick="setLang('en')">🇬🇧</span>
+            <button class="lang-btn active" id="btn-it" onclick="setLang('it')">🇮🇹</button>
+            <button class="lang-btn" id="btn-en" onclick="setLang('en')">🇬🇧</button>
         </div>
         <h1>PadreSergio House</h1>
         <p lang="it">Il tuo Guestbook Digitale</p>
@@ -102,6 +111,16 @@
         <p style="text-align: center; font-size: 16px; margin-bottom: 25px;" lang="en">
             Welcome home! We created this quick guide to make your stay in Monopoli absolutely perfect and stress-free.
         </p>
+
+        <div class="oracolo-container">
+            <div class="oracolo-header">
+                <div class="oracolo-icona" id="oracolo-emoji">🧭</div>
+                <h3 class="oracolo-titolo" id="testo-titolo">L'Oracolo del Mare</h3>
+            </div>
+            <div id="oracolo-contenuto">
+                <div class="loading-oracolo" id="testo-caricamento">Lettura dei venti a Monopoli in corso... 🌬️</div>
+            </div>
+        </div>
 
         <div class="card">
             <div class="card-title">📶 <span lang="it">Connessione Wi-Fi</span><span lang="en">Wi-Fi Connection</span></div>
@@ -179,131 +198,22 @@
                     <p lang="en" style="margin:0; font-size:14px;">You can't leave without trying <b>Poggio del sol</b>. It's our favorite in town, go early in the morning!</p>
                 </li>
                 <li>
-                    <div class="tip-title">🍝 Dove mangiare Pesce</div>
+                    <div class="tip-title">🍝 <span lang="it">Dove mangiare Pesce</span><span lang="en">Where to eat fish</span></div>
                     <p lang="it" style="margin:0; font-size:14px;">Consigliamo la <b>Locanda sul porto</b>. Pesce freschissimo e vista mare. Dite che vi manda PadreSergio!</p>
                     <p lang="en" style="margin:0; font-size:14px;">We highly recommend <b>Locanda sul porto</b>. Extremely fresh seafood and a sea view.</p>
                 </li>
                 <li>
-                    <div class="tip-title">🏖️ Le Calette più belle</div>
+                    <div class="tip-title">🏖️ <span lang="it">Le Calette più belle</span><span lang="en">The most beautiful coves</span></div>
                     <p lang="it" style="margin:0; font-size:14px;">Il mare più cristallino lo troverai a <b>Porto Rosso</b> e <b>Cala Paradiso</b>. Se cerchi spiagge sabbiose più lunghe, spostati in zona <b>Capitolo</b>.</p>
                     <p lang="en" style="margin:0; font-size:14px;">You will find the most crystal clear water at <b>Porto Rosso</b> and <b>Cala Paradiso</b>. For longer sandy beaches, go to the <b>Capitolo</b> area.</p>
                 </li>
                 <li>
-                    <div class="tip-title">🚗 Parcheggio in Centro</div>
+                    <div class="tip-title">🚗 <span lang="it">Parcheggio in Centro</span><span lang="en">Parking in the city centre</span></div>
                     <p lang="it" style="margin:0; font-size:14px;">Attenzione alla ZTL (Zona a Traffico Limitato) nel centro storico. Ti consigliamo di parcheggiare vicino a Piazza Vittorio Emanuele e proseguire a piedi.</p>
                     <p lang="en" style="margin:0; font-size:14px;">Watch out for the ZTL (Limited Traffic Zone) in the historic center. We recommend parking near Piazza Vittorio Emanuele.</p>
                 </li>
             </ul>
         </div>
-
-	<style>
-    .oracolo-container {
-        max-width: 600px;
-        margin: 30px auto;
-        background: linear-gradient(135deg, #e8f8f5 0%, #f4f7f6 100%);
-        border-radius: 12px;
-        padding: 20px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        border-left: 5px solid #5e7153;
-        text-align: left;
-        font-family: 'Arial', sans-serif;
-    }
-    .oracolo-header {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 15px;
-    }
-    .oracolo-icona {
-        font-size: 30px;
-    }
-    .oracolo-titolo {
-        margin: 0;
-        font-family: 'Georgia', serif;
-        color: #5e7153;
-        font-size: 20px;
-    }
-    .oracolo-dati {
-        font-size: 14px;
-        color: #666;
-        margin-bottom: 10px;
-        font-weight: bold;
-    }
-    .oracolo-consiglio {
-        font-size: 15px;
-        color: #333;
-        line-height: 1.5;
-        background: white;
-        padding: 15px;
-        border-radius: 8px;
-        border: 1px solid #ddd;
-    }
-    .loading-oracolo {
-        font-style: italic;
-        color: #888;
-        font-size: 14px;
-    }
-</style>
-
-<div class="oracolo-container">
-    <div class="oracolo-header">
-        <div class="oracolo-icona" id="oracolo-emoji">🧭</div>
-        <h3 class="oracolo-titolo">L'Oracolo del Mare</h3>
-    </div>
-    <div id="oracolo-contenuto">
-        <div class="loading-oracolo">Lettura dei venti a Monopoli in corso... 🌬️</div>
-    </div>
-</div>
-
-<script>
-    async function interrogaOracolo() {
-        try {
-            // Coordinate esatte di Monopoli
-            const url = 'https://api.open-meteo.com/v1/forecast?latitude=40.9559&longitude=17.2896&current_weather=true';
-            const response = await fetch(url);
-            const data = await response.json();
-            
-            const ventoDir = data.current_weather.winddirection;
-            const ventoVel = data.current_weather.windspeed;
-            
-            let nomeVento = "";
-            let consiglio = "";
-            let emoji = "🧭";
-
-            // Logica dei venti pugliesi per la costa di Monopoli
-            if (ventoDir >= 315 || ventoDir <= 45) {
-                nomeVento = "Tramontana / Maestrale (da Nord)";
-                emoji = "🌊";
-                consiglio = "Oggi il vento soffia da Nord. Il mare aperto potrebbe essere un po' mosso o increspato. <strong>Il nostro consiglio:</strong> Cerca calette ben riparate come <em>Cala Susca</em> o <em>Cala Monaci</em>, oppure scegli i lidi attrezzati con frangiflutti a Capitolo!";
-            } else if (ventoDir > 45 && ventoDir < 135) {
-                nomeVento = "Levante (dal Mare)";
-                emoji = "💨";
-                consiglio = "Oggi il vento spinge direttamente dal mare verso la costa. <strong>Il nostro consiglio:</strong> Fai attenzione se fai il bagno in zone di scogliera aperta. È la giornata perfetta per esplorare il Centro Storico o rilassarsi nelle calette più profonde e protette all'interno della città.";
-            } else if (ventoDir >= 135 && ventoDir <= 225) {
-                nomeVento = "Scirocco (da Sud)";
-                emoji = "🌴";
-                consiglio = "Oggi soffia Scirocco, vento caldo da Sud! Le lunghe spiagge sabbiose di Capitolo potrebbero avere mare mosso. <strong>Il nostro consiglio:</strong> Resta nelle calette cittadine esposte a Nord come <em>Porta Vecchia</em>, oppure fai una gita verso nord, a Polignano a Mare!";
-            } else {
-                nomeVento = "Ponente / Libeccio (da Terra)";
-                emoji = "🏖️";
-                consiglio = "Splendide notizie! Il vento soffia da terra verso il mare. <strong>Il nostro consiglio:</strong> L'Adriatico oggi sarà piatto come una tavola! È la giornata perfetta per godersi l'acqua cristallina nelle grandi spiagge di <em>Capitolo</em> o a <em>Santo Stefano</em>. Approfittane!";
-            }
-
-            // Aggiorna l'interfaccia
-            document.getElementById('oracolo-emoji').innerText = emoji;
-            document.getElementById('oracolo-contenuto').innerHTML = `
-                <div class="oracolo-dati">Vento attuale: ${nomeVento} (${ventoVel} km/h)</div>
-                <div class="oracolo-consiglio">${consiglio}</div>
-            `;
-
-        } catch (error) {
-            document.getElementById('oracolo-contenuto').innerHTML = `<div class="oracolo-consiglio">Oggi l'Oracolo riposa. Ma a Monopoli il mare è quasi sempre uno spettacolo! Chiedici un consiglio su WhatsApp. 😉</div>`;
-        }
-    }
-
-    // Avvia l'oracolo appena si carica la pagina
-    window.addEventListener('DOMContentLoaded', interrogaOracolo);
-</script>
 
         <div class="contact-box">
             <h3 style="margin-bottom: 10px;"><span lang="it">Hai bisogno di noi?</span><span lang="en">Do you need us?</span></h3>
@@ -318,22 +228,97 @@
     </div>
 
     <script>
-        // Gestione Lingua
+        // --- DIZIONARIO ORACOLO ---
+        const dizionarioOracolo = {
+            it: {
+                titolo: "L'Oracolo del Mare",
+                caricamento: "Lettura dei venti a Monopoli in corso... 🌬️",
+                ventoAttuale: "Vento attuale:",
+                errore: "Oggi l'Oracolo riposa. Ma a Monopoli il mare è quasi sempre uno spettacolo! Chiedici un consiglio su WhatsApp. 😉",
+                venti: {
+                    nord: { nome: "Tramontana / Maestrale (da Nord)", consiglio: "Oggi il vento soffia da Nord. Il mare aperto potrebbe essere un po' mosso o increspato. <strong>Il nostro consiglio:</strong> Cerca calette ben riparate come <em>Cala Susca</em> o <em>Cala Monaci</em>, oppure scegli i lidi attrezzati con frangiflutti a Capitolo!" },
+                    est: { nome: "Levante (dal Mare)", consiglio: "Oggi il vento spinge direttamente dal mare verso la costa. <strong>Il nostro consiglio:</strong> Fai attenzione se fai il bagno in zone di scogliera aperta. È la giornata perfetta per esplorare il Centro Storico o rilassarsi nelle calette più profonde e protette all'interno della città." },
+                    sud: { nome: "Scirocco (da Sud)", consiglio: "Oggi soffia Scirocco, vento caldo da Sud! Le lunghe spiagge sabbiose di Capitolo potrebbero avere mare mosso. <strong>Il nostro consiglio:</strong> Resta nelle calette cittadine esposte a Nord come <em>Porta Vecchia</em>, oppure fai una gita verso nord, a Polignano a Mare!" },
+                    ovest: { nome: "Ponente / Libeccio (da Terra)", consiglio: "Splendide notizie! Il vento soffia da terra verso il mare. <strong>Il nostro consiglio:</strong> L'Adriatico oggi sarà piatto come una tavola! È la giornata perfetta per godersi l'acqua cristallina nelle grandi spiagge di <em>Capitolo</em> o a <em>Santo Stefano</em>. Approfittane!" }
+                }
+            },
+            en: {
+                titolo: "The Sea Oracle",
+                caricamento: "Reading Monopoli's winds... 🌬️",
+                ventoAttuale: "Current wind:",
+                errore: "The Oracle is resting today. But the sea in Monopoli is almost always a show! Ask us for advice on WhatsApp. 😉",
+                venti: {
+                    nord: { nome: "Tramontana / Maestrale (from North)", consiglio: "Today the wind blows from the North. The open sea might be a bit rough. <strong>Our advice:</strong> Look for well-sheltered coves like <em>Cala Susca</em> or <em>Cala Monaci</em>, or choose the equipped beach clubs with breakwaters in Capitolo!" },
+                    est: { nome: "Levante (from the Sea)", consiglio: "Today the wind pushes directly from the sea towards the coast. <strong>Our advice:</strong> Be careful if swimming in open cliff areas. It's the perfect day to explore the Historic Center or relax in the deeper, protected coves inside the city." },
+                    sud: { nome: "Scirocco (from South)", consiglio: "Scirocco is blowing today, a warm wind from the South! The long sandy beaches of Capitolo might have rough seas. <strong>Our advice:</strong> Stay in the city coves facing North like <em>Porta Vecchia</em>, or take a trip north to Polignano a Mare!" },
+                    ovest: { nome: "Ponente / Libeccio (from Land)", consiglio: "Great news! The wind is blowing from the land towards the sea. <strong>Our advice:</strong> The Adriatic Sea will be completely flat today! It's the perfect day to enjoy the crystal clear water in the large beaches of <em>Capitolo</em> or <em>Santo Stefano</em>. Enjoy!" }
+                }
+            }
+        };
+
+        let datiMeteoAttuali = null;
+
+        async function caricaOracolo() {
+            try {
+                const url = 'https://api.open-meteo.com/v1/forecast?latitude=40.9559&longitude=17.2896&current_weather=true';
+                const response = await fetch(url);
+                datiMeteoAttuali = await response.json();
+                mostraRisultatoOracolo();
+            } catch (error) {
+                const lang = document.body.className || 'it';
+                document.getElementById('oracolo-contenuto').innerHTML = `<div class="oracolo-consiglio">${dizionarioOracolo[lang].errore}</div>`;
+            }
+        }
+
+        function mostraRisultatoOracolo() {
+            const lang = document.body.className || 'it';
+            const testi = dizionarioOracolo[lang];
+
+            // Se i dati non sono ancora stati scaricati, aggiorna solo le scritte di caricamento
+            if (!datiMeteoAttuali) {
+                document.getElementById('testo-titolo').innerText = testi.titolo;
+                const caricamentoEl = document.getElementById('testo-caricamento');
+                if(caricamentoEl) caricamentoEl.innerText = testi.caricamento;
+                return;
+            }
+
+            const ventoDir = datiMeteoAttuali.current_weather.winddirection;
+            const ventoVel = datiMeteoAttuali.current_weather.windspeed;
+            
+            let chiaveVento = "";
+            let emoji = "🧭";
+
+            if (ventoDir >= 315 || ventoDir <= 45) { chiaveVento = "nord"; emoji = "🌊"; } 
+            else if (ventoDir > 45 && ventoDir < 135) { chiaveVento = "est"; emoji = "💨"; } 
+            else if (ventoDir >= 135 && ventoDir <= 225) { chiaveVento = "sud"; emoji = "🌴"; } 
+            else { chiaveVento = "ovest"; emoji = "🏖️"; }
+
+            document.getElementById('testo-titolo').innerText = testi.titolo;
+            document.getElementById('oracolo-emoji').innerText = emoji;
+            document.getElementById('oracolo-contenuto').innerHTML = `
+                <div class="oracolo-dati">${testi.ventoAttuale} ${testi.venti[chiaveVento].nome} (${ventoVel} km/h)</div>
+                <div class="oracolo-consiglio">${testi.venti[chiaveVento].consiglio}</div>
+            `;
+        }
+
+        // --- GESTIONE LINGUA PRINCIPALE ---
         function setLang(lang) {
             document.body.className = lang;
             document.getElementById('btn-it').classList.remove('active');
             document.getElementById('btn-en').classList.remove('active');
             document.getElementById('btn-' + lang).classList.add('active');
+            
+            // Aggiorna anche i testi dell'Oracolo quando si preme il tasto!
+            mostraRisultatoOracolo();
         }
 
-        // Tasto Magico Wi-Fi
+        // --- TASTO MAGICO WI-FI ---
         function copiaWiFi() {
             const pwd = document.getElementById('wifi-pwd').value;
             const btn = document.getElementById('btn-copia-txt');
             const originalHTML = btn.innerHTML;
             
             navigator.clipboard.writeText(pwd).then(() => {
-                // Effetto visivo di successo
                 btn.style.backgroundColor = "#27ae60";
                 if(document.body.className === 'it') {
                     btn.innerHTML = '✔️ Password Copiata!';
@@ -341,7 +326,6 @@
                     btn.innerHTML = '✔️ Password Copied!';
                 }
                 
-                // Torna normale dopo 3 secondi
                 setTimeout(() => {
                     btn.style.backgroundColor = "var(--verde-primario)";
                     btn.innerHTML = originalHTML;
@@ -350,7 +334,10 @@
                 alert('Errore durante la copia: ' + err);
             });
         }
-    </script>
 
+        // --- AVVIA L'ORACOLO ALL'APERTURA DELLA PAGINA ---
+        window.addEventListener('DOMContentLoaded', caricaOracolo);
+
+    </script>
 </body>
 </html>
