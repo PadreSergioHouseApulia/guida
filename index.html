@@ -188,6 +188,30 @@
             </div>
         </div>
 
+	<div style="max-width: 600px; margin: 20px auto; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); background-color: #5e7153;">
+            <div style="background-color: #4a5a41; color: white; text-align: center; padding: 10px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.2);">
+                <span id="data-meteo-it" lang="it"></span>
+                <span id="data-meteo-en" lang="en"></span>
+            </div>
+            <a class="weatherwidget-io" href="https://forecast7.com/it/40d9517d30/monopoli/" data-label_1="MONOPOLI" data-label_2="PadreSergio House" data-font="Helvetica" data-icons="Climacons Animated" data-theme="pure" data-basecolor="#5e7153" data-textcolor="#ffffff" data-highcolor="#ffffff" data-lowcolor="#e0e0e0" data-suncolor="#f1c40f" data-mooncolor="#f1c40f" data-cloudcolor="#ffffff" data-raincolor="#8c9c83">Meteo a PadreSergio House</a>
+            <script>
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+            function aggiornaDataOra() {
+                const dataOggi = new Date();
+                const opzioniData = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                const opzioniOra = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+                let stringaDataIT = dataOggi.toLocaleDateString('it-IT', opzioniData);
+                let stringaOraIT = dataOggi.toLocaleTimeString('it-IT', opzioniOra);
+                let stringaDataEN = dataOggi.toLocaleDateString('en-US', opzioniData);
+                let stringaOraEN = dataOggi.toLocaleTimeString('en-US', opzioniOra);
+                document.getElementById('data-meteo-it').innerText = stringaDataIT.charAt(0).toUpperCase() + stringaDataIT.slice(1) + " - " + stringaOraIT;
+                document.getElementById('data-meteo-en').innerText = stringaDataEN.charAt(0).toUpperCase() + stringaDataEN.slice(1) + " - " + stringaOraEN;
+            }
+            aggiornaDataOra();
+            setInterval(aggiornaDataOra, 1000);
+            </script>
+        </div>
+
         <div class="card">
             <div class="card-title">📍 <span lang="it">I nostri consigli "Segreti"</span><span lang="en">Our "Secret" Local Tips</span></div>
             
@@ -362,6 +386,27 @@
                 }
             }
         </script>
+
+	    <div class="card" style="padding: 0; overflow: hidden; border: none; background: #191414; color: white;">
+    <div style="padding: 20px 20px 10px 20px;">
+        <h3 style="color: #1DB954; font-family: 'Georgia', serif; margin: 0; display: flex; align-items: center; gap: 10px;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.491 17.293a.747.747 0 0 1-1.027.247c-2.846-1.741-6.429-2.135-10.648-1.17a.75.75 0 0 1-.326-1.464c4.619-1.056 8.579-.604 11.754 1.34a.748.748 0 0 1 .247 1.047zm1.465-3.263a.937.937 0 0 1-1.287.308c-3.256-1.999-8.219-2.582-12.069-1.411a.937.937 0 1 1-.549-1.791c4.409-1.338 9.882-.687 13.597 1.602a.936.936 0 0 1 .308 1.292zm.127-3.396c-3.905-2.319-10.334-2.533-14.075-1.398a1.125 1.125 0 1 1-.655-2.155c4.298-1.305 11.394-1.049 15.894 1.623a1.125 1.125 0 0 1-1.164 1.93z"/></svg>
+            <span lang="it">Soundtrack di Puglia</span>
+            <span lang="en">Puglian Soundtrack</span>
+        </h3>
+        <p lang="it" style="font-size: 14px; color: #b3b3b3; margin: 10px 0;">Rilassati con la nostra selezione musicale pensata per il tuo soggiorno.</p>
+        <p lang="en" style="font-size: 14px; color: #b3b3b3; margin: 10px 0;">Relax with our curated music selection designed for your stay.</p>
+    </div>
+
+    <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/6D6Dd7lPFX4qjpJ2NdVbWg?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    
+    <div style="padding: 15px; text-align: center; background: #282828;">
+        <a href="https://open.spotify.com/playlist/37i9dQZF1DWTwnEm1Z9vYv" target="_blank" style="color: #1DB954; text-decoration: none; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">
+            <span lang="it">Apri nell'app di Spotify</span>
+            <span lang="en">Open in Spotify App</span>
+        </a>
+    </div>
+</div>
        
             <div class="contact-box">
             <h3 style="margin-bottom: 10px;"><span lang="it">Hai bisogno di noi?</span><span lang="en">Do you need us?</span></h3>
