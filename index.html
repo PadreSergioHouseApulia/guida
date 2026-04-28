@@ -494,6 +494,24 @@
             `;
         }
 
+	// AUTO-RILEVAMENTO LINGUA INTELLIGENTE
+        window.onload = () => {
+            const saved = localStorage.getItem('pref-lang');
+            if (saved) {
+                // Se l'ospite aveva già cliccato un tastino, rispetta la sua scelta
+                changeLang(saved);
+            } else {
+                // Altrimenti legge la lingua del suo telefono
+                const userLang = navigator.language || navigator.userLanguage;
+                // Se il telefono è in italiano, mostra ITA. Per tutto il resto del mondo, mostra ENG in automatico!
+                if (userLang.toLowerCase().startsWith('it')) {
+                    changeLang('it');
+                } else {
+                    changeLang('en');
+                }
+            }
+        };
+
         // --- GESTIONE LINGUA PRINCIPALE ---
         function setLang(lang) {
             document.body.className = lang;
