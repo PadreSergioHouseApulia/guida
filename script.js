@@ -229,5 +229,42 @@ function copiaWiFi() {
     });
 }
 
+// --- FUNZIONE COPIA WI-FI (UX AVANZATA) ---
+function copiaWiFi() {
+    const pwd = document.getElementById('wifi-pwd').value;
+    
+    // Usa le API moderne per copiare negli appunti
+    navigator.clipboard.writeText(pwd).then(() => {
+        const btn = document.getElementById('btn-copia-txt');
+        
+        // 1. Cambia colore in verde "successo" e aggiorna il testo col checkmark
+        btn.style.backgroundColor = "#27ae60"; 
+        btn.innerHTML = `
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <span lang="it">Copiata! Incolla in Impostazioni</span>
+            <span lang="en">Copied! Paste in Settings</span>
+        `;
+        
+        // 2. Feedback tattile: fa vibrare leggermente il telefono se supportato
+        if (navigator.vibrate) {
+            navigator.vibrate(50);
+        }
+
+        // 3. Reset automatico: dopo 5 secondi fa tornare il bottone come prima
+        setTimeout(() => {
+            btn.style.backgroundColor = "var(--verde-primario)";
+            btn.innerHTML = `
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <span lang="it">Copia Password</span>
+                <span lang="en">Copy Password</span>
+            `;
+        }, 5000);
+        
+    }).catch(err => {
+        // Fallback di sicurezza in caso di browser molto vecchi
+        alert("La password è: PadreSergio2022*");
+    });
+}
+
 // --- AVVIA L'ORACOLO ALL'APERTURA DELLA PAGINA ---
 window.addEventListener('DOMContentLoaded', caricaOracolo);
